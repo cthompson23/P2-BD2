@@ -77,7 +77,10 @@ services:
         condition: service_started
     ports:
       - "5001:${PORT}"
-    command: ["node", "server.js"]
+    volumes:
+    - ..:/usr/local/app         
+    - /usr/local/app/node_modules  
+    command: ["npx", "nodemon", "server.js"]
 
   search:
     build:
@@ -96,7 +99,8 @@ services:
       - "5002:${PORT}"
     volumes:
       - ..:/usr/local/app
-    command: ["node", "elastic_search_service/server.js"]
+      - /usr/local/app/node_modules  
+    command: ["npx", "nodemon", "services/elastic_search_service/server.js"]
 
   nginx:
     image: nginx:1.29.8

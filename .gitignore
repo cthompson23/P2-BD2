@@ -4,6 +4,7 @@ node_modules/
 .env.postgres
 .env.*
 
+
 logs
 *.log
 npm-debug.log*
