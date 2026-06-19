@@ -26,3 +26,7 @@ Thumbs.db
 *.swp
 
 .cache/
+
+**/.ipynb_checkpoints
+**/.Trash-0
+**__pycache__

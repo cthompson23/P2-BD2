@@ -10,6 +10,9 @@ El proyecto utiliza contenedores Docker, autenticación con Keycloak y una base 
 - **Keycloak**
 - **Docker**
 - **Elasticsearch**
+- **Redash**
+- **Airflow**
+- **Spark**
 
 ## 🛠️ Instalación
 Clonar repositorio:

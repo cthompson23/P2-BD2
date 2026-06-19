@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+
+  <!-- Point Spark at the Hive Metastore Thrift server -->
+  <property>
+    <name>hive.metastore.uris</name>
+    <value>thrift://hive-metastore:9083</value>
+  </property>
+
+  <!-- Warehouse location (must match the volume mount in compose) -->
+  <property>
+    <name>hive.metastore.warehouse.dir</name>
+    <value>/opt/hive/data/warehouse</value>
+  </property>
+
+  <!-- Use the remote metastore (not embedded) -->
+  <property>
+    <name>hive.metastore.local</name>
+    <value>false</value>
+  </property>
+
+  <!-- Needed by Spark to enable Hive support -->
+  <property>
+    <name>hive.execution.engine</name>
+    <value>spark</value>
+  </property>
+
+</configuration>

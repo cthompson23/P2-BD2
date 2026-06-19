@@ -23,7 +23,7 @@ else if (process.env.DB_TYPE === "mongo") {
     const mongoDbName = process.env.MONGO_DATABASE || "restaurantes_db";
     
     const getMongoClient = async () => {
-        if (!mongoClient) {
+        if (!mongoClient || !mongoClient.topology?.isConnected()) {
             mongoClient = new MongoClient(mongoUrl);
             await mongoClient.connect();
             console.log("Conectado a MongoDB");

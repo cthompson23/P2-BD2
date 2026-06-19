@@ -32,7 +32,8 @@ PG_CONFIG = {
 # ──────────────────────────────────────────────
 NUM_USUARIOS      = 20
 NUM_RESERVACIONES = 200
-NUM_PEDIDOS       = 300
+NUM_PEDIDOS       = 500
+NUM_RESTAURANTES = 50
 
 fake = Faker("es_MX")
 random.seed(42)
@@ -51,47 +52,207 @@ def random_date(start_days_ago=365, end_days_ago=0):
     return date.today() - timedelta(days=delta)
 
 # ══════════════════════════════════════════════
+# NOMBRES DE RESTAURANTES
+# ══════════════════════════════════════════════
+
+PREFIJOS_RESTAURANTE = [
+    "La", "El", "Los", "Las", "Casa", "Rincón", "Fogón", "Sabores de",
+    "Cocina", "Rancho", "Patio", "Mar y", "Tierra y", "Don", "Doña",
+]
+
+SUFIJOS_RESTAURANTE = [
+    "la Abuela", "los Andes", "la Costa", "Tradición", "del Pacífico",
+    "Tico", "del Campo", "Herencia", "del Volcán", "Caribe",
+    "la Montaña", "del Mar", "Sabroso", "Tropical", "del Valle",
+    "Bendición", "los Sueños", "la Familia", "Auténtico", "Buenaventura",
+]
+
+NOMBRES_PROPIOS = [
+    "Marisol", "Don Chico", "Lupita", "El Viejo Roble", "Tres Marías",
+    "La Choza", "Rancho Alegre", "El Bohío", "Sabor Nuestro", "La Candela",
+    "Donde Marta", "El Quincho", "La Tinaja", "Mar Adentro", "Tierra Viva",
+    "El Copal", "La Iguana", "Punto y Coma", "El Zaguán", "La Fogata",
+]
+
+def generar_nombre_restaurante():
+    estilo = random.choice(["prefijo_sufijo", "propio", "propio"])
+    if estilo == "prefijo_sufijo":
+        return f"{random.choice(PREFIJOS_RESTAURANTE)} {random.choice(SUFIJOS_RESTAURANTE)}"
+    else:
+        return random.choice(NOMBRES_PROPIOS)
+
+# ══════════════════════════════════════════════
 # DATOS DE REFERENCIA
 # ══════════════════════════════════════════════
 
-CATEGORIAS_MENU = ["Desayunos", "Almuerzos", "Cenas", "Postres", "Bebidas", "Entradas"]
+CATEGORIAS_MENU = [
+    "Desayunos", "Almuerzos", "Cenas", "Postres", "Bebidas",
+    "Entradas", "Ensaladas", "Sopas", "Mariscos", "Carnes", "Vegetariano",
+]
 
 PLATOS_POR_CATEGORIA = {
     "Desayunos": [
-        ("Gallo pinto con huevo", 4500),
-        ("Casado de desayuno",    5500),
-        ("Pancakes con miel",     3800),
-        ("Frutas con granola",    3200),
+        ("Gallo pinto con huevo",           4500),
+        ("Casado de desayuno",              5500),
+        ("Pancakes con miel",               3800),
+        ("Frutas con granola",              3200),
+        ("Huevos benedictinos",             6200),
+        ("Omelette de vegetales",           5000),
+        ("Tostadas francesas",              4200),
+        ("Burrito de desayuno",             5800),
+        ("Avena con frutas tropicales",     3500),
+        ("Waffles con fresas",              4800),
+        ("Bagel con salmón ahumado",        7500),
+        ("Wrap de huevo y tocino",          5200),
     ],
     "Almuerzos": [
-        ("Casado de pollo",       6500),
-        ("Casado de res",         7000),
-        ("Casado vegetariano",    5800),
-        ("Arroz con camarones",   8500),
+        ("Casado de pollo",                 6500),
+        ("Casado de res",                   7000),
+        ("Casado vegetariano",              5800),
+        ("Arroz con camarones",             8500),
+        ("Casado de pescado frito",         7200),
+        ("Pollo al curry con arroz",        7800),
+        ("Chifrijo",                        5500),
+        ("Tamal de pollo",                  4500),
+        ("Arroz con pollo",                 6800),
+        ("Sopa de mondongo",                6000),
+        ("Casado de cerdo",                 6700),
+        ("Burrito de frijoles y arroz",     5200),
+        ("Plato de gallos mixtos",          5500),
+        ("Caldo de res",                    6200),
     ],
     "Cenas": [
-        ("Filete de tilapia",     9000),
-        ("Lomo saltado",          9500),
-        ("Pasta alfredo",         7500),
-        ("Pollo a la plancha",    7000),
+        ("Filete de tilapia",               9000),
+        ("Lomo saltado",                    9500),
+        ("Pasta alfredo",                   7500),
+        ("Pollo a la plancha",              7000),
+        ("Costillas BBQ",                  10500),
+        ("Salmón en salsa de limón",       12000),
+        ("Risotto de hongos",               8800),
+        ("Pollo en salsa de mostaza",       8200),
+        ("Filete de res en salsa de vino",  11000),
+        ("Camarones al ajillo",             9800),
+        ("Pechuga rellena de espinacas",    8500),
+        ("Trucha al vapor",                 9200),
+        ("Cordero con hierbas",            13000),
+        ("Pulpo a la gallega",             11500),
     ],
     "Postres": [
-        ("Tres leches",           2500),
-        ("Flan de coco",          2200),
-        ("Brownie con helado",    3000),
-        ("Arroz con leche",       1800),
+        ("Tres leches",                     2500),
+        ("Flan de coco",                    2200),
+        ("Brownie con helado",              3000),
+        ("Arroz con leche",                 1800),
+        ("Cheesecake de maracuyá",          3500),
+        ("Churros con chocolate",           2800),
+        ("Tiramisu",                        3200),
+        ("Crepes de nutella",               2900),
+        ("Helado artesanal 3 bolas",        2600),
+        ("Pastel de chocolate",             3400),
+        ("Natilla con tamal",               2100),
+        ("Panna cotta de vainilla",         3100),
+        ("Gelatina de frutas tropicales",   1900),
+        ("Waffles con dulce de leche",      3600),
     ],
     "Bebidas": [
-        ("Refresco natural",      1500),
-        ("Agua mineral",           800),
-        ("Café chorreado",        1200),
-        ("Jugo de naranja",       1800),
+        ("Refresco natural",                1500),
+        ("Agua mineral",                     800),
+        ("Café chorreado",                  1200),
+        ("Jugo de naranja",                 1800),
+        ("Horchata",                        1600),
+        ("Agua de jamaica",                 1400),
+        ("Limonada con hierbabuena",        1700),
+        ("Batido de fresa",                 2200),
+        ("Batido de mango",                 2200),
+        ("Té frío de durazno",              1500),
+        ("Agua de pipa",                    2000),
+        ("Jugo verde detox",                2500),
+        ("Chocolate caliente",              1900),
+        ("Smoothie tropical",               2800),
+        ("Cerveza artesanal",               3500),
+        ("Kombucha de jengibre",            2600),
     ],
     "Entradas": [
-        ("Ceviche de camarón",    5500),
-        ("Patacones con guacamole", 3500),
-        ("Ensalada César",        4000),
-        ("Sopa del día",          3000),
+        ("Ceviche de camarón",              5500),
+        ("Patacones con guacamole",         3500),
+        ("Ensalada César",                  4000),
+        ("Sopa del día",                    3000),
+        ("Tabla de quesos y embutidos",     6500),
+        ("Alitas de pollo BBQ",             5200),
+        ("Yuca frita con chimichurri",      3200),
+        ("Bruschetta de tomate",            3800),
+        ("Calamares fritos",                5800),
+        ("Nachos con queso fundido",        4500),
+        ("Rollitos de primavera",           4200),
+        ("Tostones con frijoles",           3000),
+        ("Carpaccio de res",                6000),
+        ("Dip de espinaca con chips",       3700),
+    ],
+    "Ensaladas": [
+        ("Ensalada griega",                 4500),
+        ("Ensalada caprese",                4800),
+        ("Ensalada de pollo y aguacate",    5500),
+        ("Ensalada de atún",                4200),
+        ("Ensalada de rúcula y pera",       5000),
+        ("Ensalada waldorf",                4600),
+        ("Ensalada tropical de palmito",    4900),
+        ("Ensalada de quinoa",              5200),
+        ("Ensalada niçoise",                5500),
+        ("Ensalada de espinaca y fresas",   4700),
+    ],
+    "Sopas": [
+        ("Sopa de tomate",                  3200),
+        ("Crema de elote",                  3500),
+        ("Consomé de pollo",                3000),
+        ("Sopa de mariscos",                6500),
+        ("Crema de zapallo",                3300),
+        ("Sopa minestrone",                 3800),
+        ("Caldo tlalpeño",                  4000),
+        ("Sopa de lentejas",                3200),
+        ("Bisque de langosta",              7500),
+        ("Sopa de fideos",                  2800),
+        ("Crema de champiñones",            3600),
+    ],
+    "Mariscos": [
+        ("Ceviche mixto",                   8500),
+        ("Langosta al ajillo",             15000),
+        ("Camarones en salsa criolla",      9500),
+        ("Pulpo en aceite de oliva",       11000),
+        ("Tilapia entera frita",            8000),
+        ("Corvina al vapor",                9800),
+        ("Cangrejo en salsa de coco",      12000),
+        ("Calamar en su tinta",             9200),
+        ("Salmón a la mantequilla",        11500),
+        ("Coctel de mariscos",              7500),
+        ("Mariscos al grill",              13000),
+        ("Paella de mariscos",             14000),
+    ],
+    "Carnes": [
+        ("Churrasco 300g",                 12000),
+        ("Lomo fino en salsa bordelesa",   14000),
+        ("Punta de lomo al carbón",        11500),
+        ("Costilla de cerdo ahumada",      10000),
+        ("Picaña brasileña",               13000),
+        ("Entrecot de res",                13500),
+        ("Rack de cordero",                15000),
+        ("Medallón de cerdo con manzana",   9500),
+        ("Pollo entero a la brasa",        10500),
+        ("Anticuchos de res",               6500),
+        ("Hamburguesa gourmet 200g",        8500),
+        ("Tacos de carnitas x3",            6000),
+    ],
+    "Vegetariano": [
+        ("Curry de garbanzos",              6500),
+        ("Hamburguesa de lentejas",         6000),
+        ("Bowl de quinoa y vegetales",      6800),
+        ("Tofu a la plancha con salsa de soya", 5500),
+        ("Lasaña de vegetales",             7000),
+        ("Falafel con hummus",              5800),
+        ("Wrap de aguacate y frijoles",     5200),
+        ("Pizza margarita vegetariana",     7500),
+        ("Stir fry de vegetales y tofu",    6200),
+        ("Tacos de champiñones y rajas",    5500),
+        ("Enchiladas verdes vegetarianas",  6300),
+        ("Buddha bowl",                     6900),
     ],
 }
 
@@ -102,6 +263,12 @@ ESTADOS_RESERVACION = ["activa", "completada", "cancelada"]
 UBICACIONES_CR = [
     "San José Centro", "Escazú", "Santa Ana", "Heredia", "Alajuela",
     "Cartago", "Liberia", "Pérez Zeledón", "Limón", "Jacó",
+    "Guanacaste", "Puntarenas", "Quepos", "Grecia", "Palmares",
+    "Nicoya", "Tilaran", "Ciudad Quesada", "Turrialba", "Atenas",
+    "Naranjo", "Orotina", "Sarchí", "Zarcero", "Paraíso",
+    "Tres Ríos", "Curridabat", "Desamparados", "Aserrí", "Moravia",
+    "Guadalupe", "San Pedro", "Los Yoses", "La Uruca", "Tibás",
+    "Coronado", "San Pablo", "Barva", "Belén", "Flores",
 ]
 
 # ══════════════════════════════════════════════
@@ -121,12 +288,12 @@ def seed_postgres(cur):
     print("→ Insertando restaurantes...")
     restaurantes_data = [
         (
-            f"Restaurante {fake.last_name()}",
-            ubicacion,
+            generar_nombre_restaurante(),
+            random.choice(UBICACIONES_CR),
             fake.unique.email(),
             fake.numerify("2###-####"),
         )
-        for ubicacion in UBICACIONES_CR
+        for _ in range(NUM_RESTAURANTES)
     ]
     execute_values(cur, """
         INSERT INTO restaurantes (nombre_rest, ubicacion, correo_rest, telefono_rest)
@@ -141,7 +308,7 @@ def seed_postgres(cur):
     print("→ Insertando menús...")
     menus_data = []
     for rest_id in rest_ids:
-        for categoria in random.sample(CATEGORIAS_MENU, k=random.randint(3, 5)):
+        for categoria in random.sample(CATEGORIAS_MENU, k=random.randint(5, 10)):
             menus_data.append((categoria, rest_id))
 
     execute_values(cur, """

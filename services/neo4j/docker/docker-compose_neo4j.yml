@@ -1,0 +1,25 @@
+services:
+  neo4j:
+    image: neo4j:5.24
+    container_name: neo4j
+    hostname: neo4j
+    environment:
+      NEO4J_AUTH: neo4j/restaurantes123
+      NEO4J_PLUGINS: '["apoc"]'
+      NEO4J_dbms_security_procedures_unrestricted: "apoc.*"
+    ports:
+      - "7474:7474"   # Neo4j Browser (HTTP)
+      - "7687:7687"   # Bolt protocol (driver connections)
+    volumes:
+      - neo4j-data:/data
+      - neo4j-logs:/logs
+    networks:
+      - olap-network
+
+networks:
+  olap-network:
+    external: true
+
+volumes:
+  neo4j-data:
+  neo4j-logs:
